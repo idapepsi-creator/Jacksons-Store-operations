@@ -112,3 +112,26 @@ for (const [schedule, names] of [
 persist();
 render();
 
+// Show names above the four cooler initials boxes
+function fixCoolerNames() {
+  const coolerScreen = document.getElementById('coolers');
+  if (!coolerScreen) return;
+
+  const inputs = [...coolerScreen.querySelectorAll('input')]
+    .filter(input => input.placeholder?.toLowerCase().includes('initial'));
+
+  const names = ['Deli', 'Beer Cave', 'Big', 'Small'];
+
+  if (inputs.length !== 4) return;
+
+  inputs.forEach((input, index) => {
+    const label = document.createElement('strong');
+    label.textContent = names[index];
+    label.style.display = 'block';
+    label.style.marginBottom = '6px';
+    input.parentElement.prepend(label);
+  });
+}
+fixCoolerNames();
+
+
