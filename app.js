@@ -51,3 +51,64 @@ async function initFirebase(){if(!firebaseConfig?.projectId){document.getElement
 // Shared syncing is intentionally disabled until authentication and role-based rules are implemented.
 document.getElementById('notice').textContent='PREVIEW ONLY — saves on this device. Do not use for live staff records yet.';
 render();
+
+// Add Monday manager duties without duplicating them
+const mondayManagerDuties = [
+  "Print new reserve",
+  "Payroll done by 8 AM",
+  "Budget hours in weekly tracker",
+  "INIR Date range sent to Paul"
+];
+
+const regularManagerDuties = [
+  "Books",
+  "Send in Fuel Pricing before 8 AM",
+  "Payroll",
+  "Add lottery",
+  "Audit lottery and INIR",
+  "Power BI",
+  "Clean Bean to Brew",
+  "Check open/posted invoices",
+  "Add to weekly recap as much as possible",
+  "Check inside displays, open top if needed.",
+  "Daily stuff on back complete",
+  "Check E-mail and move to folders",
+  "Morning Checklist done FIRST thing",
+  "Check Communication Hub",
+  "PULL WEEDS",
+  "Clean the bathroom top to bottom. Check product and replace",
+  "Inside Garbages",
+  "Outside Garbages",
+  "Check coolers, all are stocked before night shift leaves.",
+  "Marketing update",
+  "Water vats",
+  "Check yesterday’s shift duty sheets everything marked was done",
+  "Fill tubes",
+  "Download Pricebook",
+  "Refresh database on handheld and tablet",
+  "Make lunch at 9:30 AM",
+  "Check fuel prices on the way home from work!"
+];
+
+for (const [schedule, names] of [
+  ["Monday", mondayManagerDuties],
+  ["Every day", regularManagerDuties]
+]) {
+  for (const name of names) {
+    if (!state.tasks.some(t =>
+      t.shift === "Morning" &&
+      t.schedule === schedule &&
+      t.name === name
+    )) {
+      state.tasks.push({
+        id: uid(),
+        shift: "Morning",
+        schedule,
+        name
+      });
+    }
+  }
+}
+persist();
+render();
+
