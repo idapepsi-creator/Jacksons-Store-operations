@@ -13,7 +13,7 @@ function coolerView(){
  let date=el('input',{type:'date',value:day});date.onchange=e=>{day=e.target.value;render()};sec.append(date);
  for(const name of ['Deli','Beer Cave','Big','Small']){
    const k=day+'|'+name, rec=state.coolers[k],r=el('div',{className:'task'});
-   r.append(el('strong',{textContent:name}));
+   r.append(el('strong',{textContent:name,style:'display:block;color:#000000;font-size:20px;font-weight:bold;'}));
    if(rec){
      r.append(el('span',{textContent:rec.initials+' · '+new Date(rec.at).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})}));
      r.append(btn('Correct',()=>{if(!confirm('Clear this entry?'))return;delete state.coolers[k];persist();render()}));
