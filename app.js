@@ -31,7 +31,7 @@ function vendorView(){
  let sec=el('section');sec.innerHTML='<h2>Vendor / driver communication log</h2><p class="muted">Add discussion items, update status, and record initials. Local preview only.</p>';
  let f=el('form');f.innerHTML='<label>Vendor</label><input required placeholder="Vendor name"><label>Discuss with</label><select><option>Rep</option><option>Driver</option><option>Both</option></select><label>Discussion item</label><input required placeholder="Product or issue"><p><button class="primary">Add item</button></p>';
  f.onsubmit=e=>{e.preventDefault();const ins=f.querySelectorAll('input');state.vendors.push({id:uid(),vendor:ins[0].value.trim(),contact:f.querySelector('select').value,note:ins[1].value.trim(),status:'Open',events:[]});persist();render()};sec.append(f);
- for(const v of state.vendors.filter(v=>v.status!=='Resolved'))){let r=el('div',{className:'expiry'});r.innerHTML='<strong>'+esc(v.vendor)+'</strong> · '+esc(v.contact)+'<p>'+esc(v.note)+'</p>';
+ for(const v of state.vendors){let r=el('div',{className:'expiry'});r.innerHTML='<strong>'+esc(v.vendor)+'</strong> · '+esc(v.contact)+'<p>'+esc(v.note)+'</p>';
  let sel=el('select');for(const st of ['Open','Discussed','Waiting','Resolved'])sel.append(el('option',{value:st,textContent:st}));sel.value=v.status;
  let initials=el('input',{placeholder:'Initials',maxLength:6,className:'initials'});r.append(sel,initials,btn('Record update',()=>{let i=initials.value.trim().toUpperCase();if(!/^[A-Z]{1,6}$/.test(i))return alert('Enter initials');v.status=sel.value;v.events.push({status:v.status,initials:i,at:new Date().toISOString()});persist();render()}));
  for(const ev of v.events)r.append(el('p',{className:'muted',textContent:ev.status+' · '+ev.initials+' · '+new Date(ev.at).toLocaleString()}));
@@ -133,5 +133,7 @@ function fixCoolerNames() {
   });
 }
 fixCoolerNames();
+
+
 
 
